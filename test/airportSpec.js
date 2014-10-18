@@ -2,10 +2,11 @@ var expect  = require('chai').expect
 var Airport = require('../lib/Airport')
 var Plane   = require('../lib/Plane')
 
-var gatwick;
+var gatwick, vueling;
 
 before(function(){
-	gatwick = new Airport("Gatwick")
+	gatwick = new Airport("Gatwick");
+	vueling = new Plane("Vueling")
 });
 
 describe('Airport', function() {
@@ -24,4 +25,24 @@ describe('Airport', function() {
  			expect(gatwick.hangar).to.eql([])
  		});
  	});
- }); 
+
+ 	context("sets the location's plane when contacts with the plane",function() {
+ 		it('sets the location', function() {
+ 			gatwick.connecting_plane(vueling)
+ 			expect(vueling.location).to.eq(gatwick.name)
+ 		});
+ 	})
+}); 
+
+
+describe('Plane', function() {
+	
+	it('has a company name', function() {
+		expect(vueling.name).to.eq('Vueling')
+	});
+
+	it('has an Airport location', function() {
+		expect(vueling.location).to.eq(gatwick.name)
+	});
+
+});
