@@ -26,10 +26,16 @@ describe('Airport', function() {
  		});
  	});
 
- 	context("sets the location's plane when contacts with the plane",function() {
- 		it('sets the location', function() {
+ 	context("Interacting with the plane",function() {
+ 		it("sets the location's plane when contacts with the plane", function() {
  			gatwick.connecting_plane(vueling)
  			expect(vueling.location).to.eq(gatwick.name)
+ 		});
+
+ 		it('can land planes', function() {
+ 			gatwick.trackField_ready(vueling);
+ 			expect(gatwick.hangar).to.include(vueling);
+ 			expect(gatwick.capacity).to.eq(19);
  		});
  	})
 }); 
