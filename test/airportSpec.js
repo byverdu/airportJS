@@ -28,12 +28,12 @@ describe('Airport', function() {
 
  	context("Interacting with the plane",function() {
  		it("sets the location's plane when contacts with the plane", function() {
- 			gatwick.connecting_plane(vueling)
+ 			gatwick._connecting_plane(vueling)
  			expect(vueling.location).to.eq(gatwick.name)
  		});
 
  		it('can land planes', function() {
- 			gatwick.trackField_ready(vueling);
+ 			gatwick.track_ready_toLand(vueling);
  			expect(gatwick.hangar).to.include(vueling);
  			expect(gatwick.capacity).to.eq(19);
  		});
@@ -43,6 +43,20 @@ describe('Airport', function() {
  			expect(function(){ gatwick._checkCapacity() }).to.not.throw();
  			gatwick.capacity = 0;
  			expect(function(){ gatwick._checkCapacity() }).to.throw("We are full");
+ 		});
+
+ 		it('a plane can take off', function() {
+ 			gatwick.track_ready_toTakeOff()
+ 			expect(gatwick.hangar.length).to.eq(0);
+ 		});
+
+ 		it('a plane can take off by asking to the control tower', function() {
+ 			klm = new Plane('KLM')
+ 			gatwick.track_ready_toLand(vueling)
+ 			gatwick.track_ready_toLand(klm)
+ 			
+ 			gatwick.track_ready_toTakeOff(klm)
+ 			expect(gatwick.hangar).to.not.include(klm)
  		});
  	})
 }); 
