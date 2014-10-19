@@ -37,6 +37,13 @@ describe('Airport', function() {
  			expect(gatwick.hangar).to.include(vueling);
  			expect(gatwick.capacity).to.eq(19);
  		});
+
+ 		it('knows when the Airport is full', function() {
+ 			gatwick.capacity = 1;
+ 			expect(function(){ gatwick._checkCapacity() }).to.not.throw();
+ 			gatwick.capacity = 0;
+ 			expect(function(){ gatwick._checkCapacity() }).to.throw("We are full");
+ 		});
  	})
 }); 
 
