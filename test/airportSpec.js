@@ -2,14 +2,20 @@ var expect  = require('chai').expect
 var Airport = require('../lib/Airport')
 var Plane   = require('../lib/Plane')
 
-var gatwick, vueling;
+var gatwick, vueling, heathrow, iberia;
+
+
+describe('Airport', function() {
 
 before(function(){
 	gatwick = new Airport("Gatwick");
 	vueling = new Plane("Vueling")
 });
 
-describe('Airport', function() {
+after(function(){
+	gatwick = null;
+	vueling = null;
+})
  	
  	context('When is initialized', function(){
 
@@ -34,6 +40,7 @@ describe('Airport', function() {
 
  		it('can land planes', function() {
  			gatwick.track_ready_toLand(vueling);
+ 			
  			expect(gatwick.hangar).to.include(vueling);
  			expect(gatwick.capacity).to.eq(19);
  		});
@@ -63,13 +70,48 @@ describe('Airport', function() {
 
 
 describe('Plane', function() {
+
+	before(function(){
+
+		iberia   = new Plane('Iberia');
+		heathrow = new Airport('Heathrow');
+	})
 	
-	it('has a company name', function() {
-		expect(vueling.name).to.eq('Vueling')
+	context("When is initialized",function(){
+
+		it('has a company name', function() {
+			expect(iberia.name).to.eq('Iberia')
+		});
+
+		it('has an Airport location', function() {
+			heathrow._connecting_plane(iberia);
+			expect(iberia.location).to.eq(heathrow.name)
+		});
+
+	  it('has a flight status and starts flying', function() {
+		expect(iberia.status).to.eq('flying');
+		});
+
 	});
 
-	it('has an Airport location', function() {
-		expect(vueling.location).to.eq(gatwick.name)
+	context("Interacting with the Airport",function(){
+
+		it('changes his status after the plane lands on the Airport', function() {
+		
+			heathrow.track_ready_toLand(iberia)
+			expect(iberia.status).to.eq('landed')
+
+		});
+
+
+		it('changes his status after the plane takes off from the Airport', function() {
+			heathrow.track_ready_toTakeOff(iberia)
+			expect(iberia.location).to.eq(null)
+			expect(iberia.status).to.eq('flying again')
+
+		});
 	});
+		
+
 
 });
