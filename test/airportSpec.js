@@ -1,6 +1,7 @@
 var expect  = require('chai').expect
 var Airport = require('../lib/Airport')
 var Plane   = require('../lib/Plane')
+var Weather = require('../lib/Weather')
 
 var gatwick, vueling, heathrow, iberia;
 
@@ -103,7 +104,6 @@ describe('Plane', function() {
 
 		});
 
-
 		it('changes his status after the plane takes off from the Airport', function() {
 			heathrow.track_ready_toTakeOff(iberia)
 			expect(iberia.location).to.eq(null)
@@ -111,7 +111,19 @@ describe('Plane', function() {
 
 		});
 	});
-		
+});
 
 
+describe('Weather', function() {
+	
+before(function(){
+	forecast = new Weather()
+});
+
+	context("Different values for the Weather",function(){
+
+		it('When is sunny', function() {
+			expect(forecast.prediction()).to.eq('Sunny')
+		});
+	});
 });
