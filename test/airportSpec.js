@@ -120,10 +120,12 @@ before(function(){
 	forecast = new Weather()
 });
 
+
 	context("Different values for the Weather",function(){
 
-		it('When is sunny', function() {
-			expect(forecast.prediction()).to.eq('Sunny')
+		it('has 3 different values', function() {
+			expect(forecast.prediction()).to.match(/^Sunny|Stormy$/);
 		});
+
 	});
 });
