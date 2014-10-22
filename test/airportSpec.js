@@ -3,14 +3,16 @@ var Airport = require('../lib/Airport')
 var Plane   = require('../lib/Plane')
 var Weather = require('../lib/Weather')
 
-var gatwick, vueling, heathrow, iberia;
+var gatwick, vueling,
+    heathrow, iberia,
+    forecast, el_prat, easy_jet;
 
 
 describe('Airport', function() {
 
 before(function(){
 	gatwick = new Airport("Gatwick");
-	vueling = new Plane("Vueling")
+	vueling = new Plane("Vueling");
 });
 
 after(function(){
@@ -40,6 +42,7 @@ after(function(){
  		});
 
  		it('can land planes', function() {
+ 			gatwick.weather = 'Sunny';
  			gatwick.track_ready_toLand(vueling);
  			
  			expect(gatwick.hangar).to.include(vueling);
@@ -76,6 +79,12 @@ describe('Plane', function() {
 
 		iberia   = new Plane('Iberia');
 		heathrow = new Airport('Heathrow');
+	});
+
+	after(function(){
+
+		iberia   = null;
+		heathrow = null;
 	})
 	
 	context("When is initialized",function(){
@@ -98,7 +107,7 @@ describe('Plane', function() {
 	context("Interacting with the Airport",function(){
 
 		it('changes his status after the plane lands on the Airport', function() {
-		
+		  heathrow.weather = 'Sunny'
 			heathrow.track_ready_toLand(iberia)
 			expect(iberia.status).to.eq('landed')
 
@@ -117,15 +126,44 @@ describe('Plane', function() {
 describe('Weather', function() {
 	
 before(function(){
-	forecast = new Weather()
+	forecast = new Weather();
+	el_prat  = new Airport('El Prat');
+	easy_jet = new Plane('Easy Jet');
 });
 
 
 	context("Different values for the Weather",function(){
 
-		it('has 3 different values', function() {
-			expect(forecast.prediction()).to.match(/^Sunny|Stormy$/);
+		it('has 3 different values: Sunny, Stormy, Cloudy', function() {
+			expect(forecast.prediction()).to.match(/^Sunny|Stormy|Cloudy$/);
 		});
 
-	});
+		it('before landing the plane checks the weather status', function() {
+ 			el_prat.checkWeather();
+ 			expect(el_prat.weather).to.match(/^Sunny|Stormy|Cloudy$/);
+ 		});
+
+ 		it('the plane can land if the weather is Sunny', function() {
+				
+			el_prat.weather = 'Sunny';
+			el_prat.track_ready_toLand(easy_jet);
+			
+			expect(el_prat.hangar).to.have.length(1)
+		});
+
+ 		it('the plane can not land if the weather is Stormy', function() {
+
+ 		  el_prat.weather = 'Sunny';
+ 			expect(function(){ el_prat.track_ready_toLand(easy_jet); }).to.not.throw( "Really bad weather" );
+
+ 			el_prat.weather = 'Stormy';
+ 			expect(function(){ el_prat.track_ready_toLand(easy_jet); }).to.throw( "Really bad weather" ); 
+		});
+  });
 });
+
+
+
+
+
+
