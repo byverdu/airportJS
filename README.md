@@ -43,7 +43,7 @@ Recreation of the [third challenge](https://github.com/byverdu/airport) at Maker
 > // Objects Interaction
 > gatwick.track_ready_toLand(vueling)
 
-> Checks
+> // Checks
 > gatwick.weather  === 'Sunny'
 > gatwick.capacity !== 0
 
@@ -54,8 +54,7 @@ Recreation of the [third challenge](https://github.com/byverdu/airport) at Maker
 > gatwick.track_ready_toTakeOff(vueling)
 
 > // Sets
- 
-> vueling.status   = 'flying again'
+ > vueling.status   = 'flying again'
 ```
 
 
