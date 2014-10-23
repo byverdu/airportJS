@@ -135,12 +135,12 @@ before(function(){
 	context("Different values for the Weather",function(){
 
 		it('has 3 different values: Sunny, Stormy, Cloudy', function() {
-			expect(forecast.prediction()).to.match(/^Sunny|Stormy|Cloudy$/);
+			expect(forecast.prediction()).to.match(/^Sunny|Stormy$/);
 		});
 
 		it('before landing the plane checks the weather status', function() {
  			el_prat.checkWeather();
- 			expect(el_prat.weather).to.match(/^Sunny|Stormy|Cloudy$/);
+ 			expect(el_prat.weather).to.match(/^Sunny|Stormy$/);
  		});
 
  		it('the plane can land if the weather is Sunny', function() {
